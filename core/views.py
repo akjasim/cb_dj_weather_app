@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+
 # Create your views here.
 
 
@@ -26,11 +27,10 @@ def home(request):
         soup = BeautifulSoup(html_content, 'html.parser')
         result = dict()
         # extract region
-        result['region'] = soup.find("div", attrs={"id": "wob_loc"}).text
+        result['region'] = soup.find("span", attrs={"class": "BNeawe tAd8D AP7Wnd"}).text
         # extract temperature now
-        result['temp_now'] = soup.find("span", attrs={"id": "wob_tm"}).text
-        # get the day and hour now
-        result['dayhour'] = soup.find("div", attrs={"id": "wob_dts"}).text
-        # get the actual weather
-        result['weather_now'] = soup.find("span", attrs={"id": "wob_dc"}).text
+        result['temp_now'] = soup.find("div", attrs={"class": "BNeawe iBp4i AP7Wnd"}).text
+        # get the day, hour and actual weather
+        result['dayhour'], result['weather_now'] = soup.find("div", attrs={"class": "BNeawe tAd8D AP7Wnd"}).text.split(
+            '\n')
     return render(request, 'core/home.html', {'result': result})
